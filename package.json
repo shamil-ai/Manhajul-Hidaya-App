@@ -1,7 +1,16 @@
 {
-  "name": "manhajul-hidaya",
+  "name": "manhajul-hidaya-backend",
   "version": "1.0.0",
+  "description": "Backend for Manhajul Hidaya",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
-    "cordova-android": "^13.0.0"
+    "cookie-parser": "^1.4.6",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.13",
+    "pg": "^8.11.5"
   }
 }
