@@ -36,7 +36,7 @@ jobs:
           cp -r css js webfonts main Results *.html app/www/ 2>/dev/null || true
           
           cd app
-          # നിങ്ങളുടെ logo.png ആപ്പിന്റെ ഐക്കൺ ആയി സെറ്റ് ചെയ്യുന്നു
+          # ഫോണിന്റെ ഹോം സ്ക്രീനിൽ കാണുന്ന ആപ്പ് ലോഗോ കൃത്യമായി സെറ്റ് ചെയ്യുന്നു
           sed -i 's|</widget>|    <icon src="www/main/main/logo.png" />\n</widget>|' config.xml
           
           cordova platform add android
