@@ -32,12 +32,12 @@ jobs:
           cordova create app com.manhajulhidaya.app ManhajulHidaya
           rm -rf app/www/*
           
-          # CSS, JS, webfonts, ഇമേജുകൾ, HTML ഫയലുകൾ എന്നിവ www ഫോൾഡറിലേക്ക് കോപ്പി ചെയ്യുന്നു
+          # ഫയലുകൾ കോപ്പി ചെയ്യുന്നു
           cp -r css js webfonts main Results *.html app/www/ 2>/dev/null || true
           
           cd app
-          # ഫോണിന്റെ ഹോം സ്ക്രീനിൽ കാണുന്ന ആപ്പ് ലോഗോ കൃത്യമായി സെറ്റ് ചെയ്യുന്നു
-          sed -i 's|</widget>|    <icon src="www/main/main/logo.png" />\n</widget>|' config.xml
+          # ഐക്കൺ പാത്തുകൾ കൃത്യമായി സെറ്റ് ചെയ്യുന്നു
+          sed -i 's|</widget>|    <icon src="www/main/main/logo.png" />\n    <platform name="android">\n        <icon src="www/main/main/logo.png" density="ldpi"/>\n        <icon src="www/main/main/logo.png" density="mdpi"/>\n        <icon src="www/main/main/logo.png" density="hdpi"/>\n        <icon src="www/main/main/logo.png" density="xhdpi"/>\n        <icon src="www/main/main/logo.png" density="xxhdpi"/>\n        <icon src="www/main/main/logo.png" density="xxxhdpi"/>\n    </platform>\n</widget>|' config.xml
           
           cordova platform add android
 
