@@ -29,16 +29,16 @@ jobs:
 
       - name: Prepare Cordova Project
         run: |
-          # പുതിയൊരു കോർഡോവ പ്രൊജക്റ്റ് ഉണ്ടാക്കുന്നു
           cordova create app com.manhajulhidaya.app ManhajulHidaya
-          
-          # ഡീഫോൾട്ട് ഫയലുകൾ കളയുന്നു
           rm -rf app/www/*
           
-          # നമ്മുടെ ഫയലുകൾ www-ലേക്ക് മാറ്റുന്നു
-          cp -r css js main Results *.html app/www/
+          # CSS, JS, webfonts, ഇമേജുകൾ, HTML ഫയലുകൾ എന്നിവ www ഫോൾഡറിലേക്ക് കോപ്പി ചെയ്യുന്നു
+          cp -r css js webfonts main Results *.html app/www/ 2>/dev/null || true
           
           cd app
+          # നിങ്ങളുടെ logo.png ആപ്പിന്റെ ഐക്കൺ ആയി സെറ്റ് ചെയ്യുന്നു
+          sed -i 's|</widget>|    <icon src="www/main/main/logo.png" />\n</widget>|' config.xml
+          
           cordova platform add android
 
       - name: Generate Keystore
