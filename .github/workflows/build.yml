@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Signed Android APK
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
     - name: Install Cordova
       run: npm install -g cordova
 
-    - name: Prepare Cordova Project (Fix for www folder)
+    - name: Prepare Cordova Project
       run: |
         npm install
         mkdir www
@@ -36,11 +36,15 @@ jobs:
     - name: Add Android Platform
       run: cordova platform add android
 
-    - name: Build APK
-      run: cordova build android
+    - name: Generate Keystore (For App Signing)
+      run: |
+        keytool -genkey -v -keystore $PWD/release.keystore -alias grafixora -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Grafixora, OU=ManhajulHidaya, O=Grafixora, L=Kochi, S=Kerala, C=IN" -storepass grafixora123 -keypass grafixora123
 
-    - name: Upload APK
+    - name: Build Release APK
+      run: cordova build android --release -- --keystore=$PWD/release.keystore --storePassword=grafixora123 --alias=grafixora --password=grafixora123
+
+    - name: Upload Signed APK
       uses: actions/upload-artifact@v4
       with:
-        name: ManhajulHidaya-APK
-        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+        name: ManhajulHidaya-Official-App
+        path: platforms/android/app/build/outputs/apk/release/app-release*.apk
