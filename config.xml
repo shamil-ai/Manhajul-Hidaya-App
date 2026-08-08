@@ -1,11 +1,1 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.grafixora.manhajulhidaya" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Manhajul Hidaya</name>
-    <description>Official App for Manhajul Hidaya</description>
-    <author>Grafixora</author>
-    <content src="https://manhajulhidaya.vercel.app/" />
-    <access origin="*" />
-    <allow-navigation href="https://manhajulhidaya.vercel.app/*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-</widget>
+
