@@ -10,42 +10,73 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-    - name: Install Cordova
-      run: npm install -g cordova
+      - name: Install Cordova
+        run: npm install -g cordova
 
-    - name: Prepare Cordova Project
-      run: |
-        npm install
-        mkdir www
-        echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=https://manhajulhidaya.vercel.app/" /></head><body></body></html>' > www/index.html
+      - name: Prepare Cordova Project
+        run: |
+          npm install
+          mkdir -p www
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=https://manhajulhidaya.vercel.app/" /></head><body></body></html>' > www/index.html
 
-    - name: Add Android Platform
-      run: cordova platform add android
+      - name: Add Android Platform
+        run: cordova platform add android
 
-    - name: Generate Keystore (For App Signing)
-      run: |
-        keytool -genkey -v -keystore $PWD/release.keystore -alias grafixora -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Grafixora, OU=ManhajulHidaya, O=Grafixora, L=Kochi, S=Kerala, C=IN" -storepass grafixora123 -keypass grafixora123
+      - name: Generate Keystore
+        run: |
+          keytool -genkey -v \
+            -keystore "$PWD/release.keystore" \
+            -alias grafixora \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Grafixora, OU=ManhajulHidaya, O=Grafixora, L=Kochi, S=Kerala, C=IN" \
+            -storepass grafixora123 \
+            -keypass grafixora123
 
-    - name: Build Release APK
-      run: cordova build android --release -- --keystore=$PWD/release.keystore --storePassword=grafixora123 --alias=grafixora --password=grafixora123
+      - name: Build Release APK
+        run: |
+          cordova build android --release -- \
+            --keystore="$PWD/release.keystore" \
+            --storePassword=grafixora123 \
+            --alias=grafixora \
+            --password=grafixora123
 
-    - name: Upload Signed APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: ManhajulHidaya-Official-App
-        path: platforms/android/app/build/outputs/apk/**/*.apk
-        
+      - name: Find APK
+        run: |
+          echo "Searching for APK files..."
+          find platforms/android -type f -name "*.apk" -print
+
+      - name: Prepare APK for Upload
+        run: |
+          mkdir -p apk-output
+          APK=$(find platforms/android -type f -name "*.apk" | head -n 1)
+
+          if [ -z "$APK" ]; then
+            echo "ERROR: APK not found!"
+            exit 1
+          fi
+
+          echo "Found APK: $APK"
+          cp "$APK" apk-output/ManhajulHidaya-Official-App.apk
+
+      - name: Upload Signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ManhajulHidaya-Official-App
+          path: apk-output/ManhajulHidaya-Official-App.apk
+          if-no-files-found: error
