@@ -27,8 +27,11 @@ jobs:
     - name: Install Cordova
       run: npm install -g cordova
 
-    - name: Install Dependencies
-      run: npm install
+    - name: Prepare Cordova Project (Fix for www folder)
+      run: |
+        npm install
+        mkdir www
+        echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=https://manhajulhidaya.vercel.app/" /></head><body></body></html>' > www/index.html
 
     - name: Add Android Platform
       run: cordova platform add android
@@ -41,4 +44,3 @@ jobs:
       with:
         name: ManhajulHidaya-APK
         path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
-        
