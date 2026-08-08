@@ -1,0 +1,7 @@
+{
+  "name": "manhajul-hidaya",
+  "version": "1.0.0",
+  "dependencies": {
+    "cordova-android": "^13.0.0"
+  }
+}
